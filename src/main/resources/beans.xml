@@ -15,8 +15,10 @@
     <context:component-scan base-package="Hibernate"></context:component-scan>
 
 
+    <bean id="DaoImplID" init-method="init" class="Dao.DaoImp"></bean>
     <bean id="DepartmentID" init-method="init" destroy-method="destroy" class="Dao.DepartmentDao" >
         <!--<constructor-arg ref="sessionHibernate"></constructor-arg>-->
     </bean>
+    <bean id="MemberDaoID" class="Dao.MemberDao"></bean>
     <bean id="sessionFactory" class="Hibernate.HibernateUtils"></bean>
 </beans>

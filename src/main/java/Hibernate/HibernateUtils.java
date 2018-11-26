@@ -14,6 +14,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,6 +23,7 @@ import java.util.Map;
 public class HibernateUtils  {
     private static StandardServiceRegistry registry;
     private static SessionFactory sessionFactory;
+    private static EntityManagerFactory entityManagerFactory;
     private SessionFactory _sessionFactory;
 
     @Bean
@@ -57,6 +60,24 @@ public class HibernateUtils  {
         return  sessionFactory.openSession();
     }
 
+    @Bean
+    public EntityManagerFactory getEntityManagerFactory(){
+        if(sessionFactory==null){
+            try {
+                if (entityManagerFactory == null) {
+                    EntityManagerFactory factory = Persistence.createEntityManagerFactory("persistence");
+                    entityManagerFactory = factory;
+                }
+
+            }catch (Exception e){
+                if (registry != null) {
+                    StandardServiceRegistryBuilder.destroy(registry);
+                }
+                e.printStackTrace();
+            }
+        }
+        return  entityManagerFactory;
+    }
 
     public static void shutdown() {
         if (registry != null) {

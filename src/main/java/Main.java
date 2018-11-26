@@ -1,4 +1,5 @@
 import Dao.DepartmentDao;
+import Dao.MemberDao;
 import Entities.Department;
 import Entities.Employee;
 import Entities.MemberJpa;
@@ -19,16 +20,13 @@ public class Main {
     }
 
     public  static void insertData(){
-        EntityManagerFactory factory = Persistence.createEntityManagerFactory("persistence");
-        EntityManager entityManager = factory.createEntityManager();
-        System.out.println("Starting Transaction");
-        entityManager.getTransaction().begin();
+        ApplicationContext context = new ClassPathXmlApplicationContext("beans.xml");
+        MemberDao memberDao = (MemberDao) context.getBean("MemberDaoID");
         MemberJpa memberJpa = new MemberJpa();
-        memberJpa.setFamily("mansouri");
-        memberJpa.setName("Aso");
-        entityManager.persist(memberJpa);
-        entityManager.getTransaction().commit();
-        System.out.println("Generated New Record");
+        memberJpa.setName("Mohsen");
+        memberJpa.setFamily("Mansouri");
+        memberDao.Persist(memberJpa);
+
 //        ApplicationContext context =new ClassPathXmlApplicationContext("beans.xml");
 //        DepartmentDao dpDao = context.getBean("DepartmentID",DepartmentDao.class);
 //        dpDao.Save(null);
