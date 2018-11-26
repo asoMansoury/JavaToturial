@@ -2,6 +2,7 @@ package Hibernate;
 
 import Entities.Department;
 import Entities.Employee;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
@@ -9,16 +10,21 @@ import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.service.Service;
 import org.hibernate.service.ServiceRegistry;
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Component;
 
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class HibernateUtils {
+@Component
+public class HibernateUtils  {
     private static StandardServiceRegistry registry;
     private static SessionFactory sessionFactory;
+    private SessionFactory _sessionFactory;
 
-    public static SessionFactory getSessionFactory(){
+    @Bean
+    public Session getSessionFactory(){
         if(sessionFactory==null){
             try {
                 StandardServiceRegistryBuilder registryBuilder =
@@ -48,8 +54,9 @@ public class HibernateUtils {
                 e.printStackTrace();
             }
         }
-        return  sessionFactory;
+        return  sessionFactory.openSession();
     }
+
 
     public static void shutdown() {
         if (registry != null) {
